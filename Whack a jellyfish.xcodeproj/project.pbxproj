@@ -14,6 +14,7 @@
 		D5DEE0211F77372300C4086C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D5DEE01F1F77372300C4086C /* LaunchScreen.storyboard */; };
 		D5DEE02C1F77372300C4086C /* Whack_a_jellyfishTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEE02B1F77372300C4086C /* Whack_a_jellyfishTests.swift */; };
 		D5DEE0371F77372300C4086C /* Whack_a_jellyfishUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5DEE0361F77372300C4086C /* Whack_a_jellyfishUITests.swift */; };
+		D5DEE0481F77496200C4086C /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = D5DEE0471F77496200C4086C /* art.scnassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,8 @@
 		D5DEE0321F77372300C4086C /* Whack a jellyfishUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Whack a jellyfishUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5DEE0361F77372300C4086C /* Whack_a_jellyfishUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Whack_a_jellyfishUITests.swift; sourceTree = "<group>"; };
 		D5DEE0381F77372300C4086C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D5DEE0461F77488200C4086C /* Jellyfish.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; name = Jellyfish.scn; path = art.scnassets/Jellyfish.scn; sourceTree = "<group>"; };
+		D5DEE0471F77496200C4086C /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,11 +101,13 @@
 			isa = PBXGroup;
 			children = (
 				D5DEE0161F77372300C4086C /* AppDelegate.swift */,
+				D5DEE0461F77488200C4086C /* Jellyfish.scn */,
 				D5DEE0181F77372300C4086C /* ViewController.swift */,
 				D5DEE01A1F77372300C4086C /* Main.storyboard */,
 				D5DEE01D1F77372300C4086C /* Assets.xcassets */,
 				D5DEE01F1F77372300C4086C /* LaunchScreen.storyboard */,
 				D5DEE0221F77372300C4086C /* Info.plist */,
+				D5DEE0471F77496200C4086C /* art.scnassets */,
 			);
 			path = "Whack a jellyfish";
 			sourceTree = "<group>";
@@ -233,6 +238,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D5DEE0211F77372300C4086C /* LaunchScreen.storyboard in Resources */,
+				D5DEE0481F77496200C4086C /* art.scnassets in Resources */,
 				D5DEE01E1F77372300C4086C /* Assets.xcassets in Resources */,
 				D5DEE01C1F77372300C4086C /* Main.storyboard in Resources */,
 			);

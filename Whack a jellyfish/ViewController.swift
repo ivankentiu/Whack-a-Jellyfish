@@ -39,10 +39,13 @@ class ViewController: UIViewController {
     }
     
     func addNode() {
-        let node = SCNNode(geometry: SCNBox(width: 0.2, height: 0.2, length: 0.2, chamferRadius: 0))
-        node.position = SCNVector3(0, 0, -1)
-        node.geometry?.firstMaterial?.diffuse.contents = UIColor.blue
-        self.sceneView.scene.rootNode.addChildNode(node)
+        // use the jellyfish inside scene
+        let jellyFishScene = SCNScene(named: "art.scnassets/Jellyfish.scn")
+        
+        // convert it to node (jellyfishchild of that particular rootnode)
+        let jellyFishNode = jellyFishScene?.rootNode.childNode(withName: "Jellyfish", recursively: false)
+        jellyFishNode?.position = SCNVector3(0, 0, -1)
+        self.sceneView.scene.rootNode.addChildNode(jellyFishNode!)
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {
@@ -62,7 +65,7 @@ class ViewController: UIViewController {
             // just get the [0] not the whole array! (unwrap since we know that we tapped!)
             let results = hitTest.first!
             // jush get the geometry info not all! (hitTest.debugDescription)
-            let geometry = results.node.geometry
+            let geometry = results.node.geometry!
             print(geometry)
         }
     }
