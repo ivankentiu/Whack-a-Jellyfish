@@ -8,9 +8,14 @@
 
 import UIKit
 import ARKit
+import Each
 
 class ViewController: UIViewController {
 
+    // timer keep counting by 1 sec
+    var timer = Each(1).seconds
+    var countdown = 10
+    @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var play: UIButton!
     @IBOutlet weak var sceneView: ARSCNView!
     
@@ -33,12 +38,19 @@ class ViewController: UIViewController {
 
 
     @IBAction func play(_ sender: Any) {
+        self.setTimer()
         self.addNode()
         // as soon as jellyfish is added disable button
         self.play.isEnabled = false
     }
     
     @IBAction func reset(_ sender: Any) {
+        self.timer.stop()
+        self.restoreTimer()
+        self.play.isEnabled = true
+        sceneView.scene.rootNode.enumerateChildNodes { (node,_) in
+            node.removeFromParentNode()
+        }
     }
     
     func addNode() {
@@ -47,7 +59,7 @@ class ViewController: UIViewController {
         
         // convert it to node (jellyfishchild of that particular rootnode)
         let jellyFishNode = jellyFishScene?.rootNode.childNode(withName: "Jellyfish", recursively: false)
-        jellyFishNode?.position = SCNVector3(0, 0, -1)
+        jellyFishNode?.position = SCNVector3(randomNumbers(-1, 1), randomNumbers(-0.5, 0.5), randomNumbers(-1, 1))
         self.sceneView.scene.rootNode.addChildNode(jellyFishNode!)
     }
     
@@ -65,12 +77,27 @@ class ViewController: UIViewController {
         if hitTest.isEmpty {
             print("didn't touch anything!")
         } else {
-            // just get the [0] not the whole array! (unwrap since we know that we tapped!)
-            let results = hitTest.first!
-            let node = results.node
-            // only when no animation currently going on
-            if node.animationKeys.isEmpty {
-                 self.animateNode(node: node)
+            if countdown > 0 {
+                // just get the [0] not the whole array! (unwrap since we know that we tapped!)
+                let results = hitTest.first!
+                let node = results.node
+                
+                // only when no animation currently going on
+                if node.animationKeys.isEmpty {
+                    // start transaction
+                    SCNTransaction.begin()
+                    self.animateNode(node: node)
+                    SCNTransaction.completionBlock = {
+                        // remove after it animates
+                        node.removeFromParentNode()
+                        
+                        //add another jelly fish dead
+                        self.addNode()
+                        self.restoreTimer()
+                    }
+                    // trigger SCNTransaction
+                    SCNTransaction.commit()
+                }
             }
         }
     }
@@ -96,5 +123,32 @@ class ViewController: UIViewController {
         node.addAnimation(spin, forKey: "position")
     }
     
+    func randomNumbers(_ firstNum: CGFloat,_ secondNum: CGFloat) -> CGFloat {
+        return CGFloat(arc4random()) / CGFloat(UINT32_MAX) * abs(firstNum - secondNum) + min(firstNum, secondNum)
+    }
+    
+    // when user press play button call this function
+    func setTimer() {
+        // timer keep counting by 1 sec trigger what is inside every sec
+        self.timer.perform { () -> NextStep in
+            self.countdown -= 1
+            self.timerLabel.text = String(self.countdown)
+            if self.countdown == 0 {
+                self.timerLabel.text = "you lose"
+                return .stop
+            }
+            // continue counting
+            return .continue
+        }
+    }
+    
+    // user tap on jelly fish restore timer
+    func restoreTimer() {
+        // reset countdown
+        self.countdown = 10
+        self.timerLabel.text = String(countdown)
+    }
+    
 }
+
 
