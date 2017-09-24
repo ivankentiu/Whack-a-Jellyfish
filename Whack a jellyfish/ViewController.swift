@@ -11,6 +11,7 @@ import ARKit
 
 class ViewController: UIViewController {
 
+    @IBOutlet weak var play: UIButton!
     @IBOutlet weak var sceneView: ARSCNView!
     
     let configuration = ARWorldTrackingConfiguration()
@@ -33,6 +34,8 @@ class ViewController: UIViewController {
 
     @IBAction func play(_ sender: Any) {
         self.addNode()
+        // as soon as jellyfish is added disable button
+        self.play.isEnabled = false
     }
     
     @IBAction func reset(_ sender: Any) {
@@ -64,10 +67,33 @@ class ViewController: UIViewController {
         } else {
             // just get the [0] not the whole array! (unwrap since we know that we tapped!)
             let results = hitTest.first!
-            // jush get the geometry info not all! (hitTest.debugDescription)
-            let geometry = results.node.geometry!
-            print(geometry)
+            let node = results.node
+            // only when no animation currently going on
+            if node.animationKeys.isEmpty {
+                 self.animateNode(node: node)
+            }
         }
+    }
+    
+    // Jelly Shaky Animation
+    func animateNode(node: SCNNode) {
+        let spin = CABasicAnimation(keyPath: "position")
+        
+        // animation starts at the Current position
+        spin.fromValue = node.presentation.position
+        
+        // up to this position (relative to world origin) so move only -1 meter
+        spin.toValue = SCNVector3(node.presentation.position.x - 0.2, node.presentation.position.y - 0.2, node.presentation.position.z - 0.2)
+        
+        // make sure node animates back to initial position (3 secs to initial position)
+        spin.duration = 0.07
+        spin.autoreverses = true
+        
+        // repeat back and forth 5 times!
+        spin.repeatCount = 5
+        
+        // when node isn't animating (animation keys are empty)
+        node.addAnimation(spin, forKey: "position")
     }
     
 }
